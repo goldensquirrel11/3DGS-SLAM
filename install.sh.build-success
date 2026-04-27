@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# Install script that allowed successful build of MonoGS submodules
-# and running the demo
+# Install script containing the commands that allowed a build success on MonoGS submodules
 
 # Define the environment name
 ENV_NAME=rgbd-3dgs-slam
@@ -28,7 +27,7 @@ pip install torch torchvision torchaudio
 pip install -U xformers --index-url https://download.pytorch.org/whl/cu121
 
 # Install remaining pip packages
-pip install matplotlib==3.5.3 platformdirs>=2.2.0 cython>=3.0.0 cython>=3.0.0 mako tqdm opencv-python-headless munch trimesh plyfile evo==1.11.0 open3d torchmetrics imgviz PyOpenGL glfw PyGLM wandb lpips rich ruff appdirs attrs black blosc2 botocore certifi charset-normalizer click contourpy cycler docker-pycreds einops filelock flake8 flake8-bugbear flake8-comprehensions fonttools fsspec fvcore gitdb GitPython h5py huggingface-hub idna imageio imath iopath isort Jinja2 jmespath kiwisolver MarkupSafe mccabe mpmath msgpack mypy-extensions ndindex networkx ninja numexpr OpenEXR packaging pandas pathspec pillow>=9.3.0 platformdirs portalocker protobuf psutil py-cpuinfo pycodestyle pyflakes pyparsing python-dateutil pytz PyYAML requests safetensors scipy sentry-sdk setproctitle six smmap sympy tables tabulate termcolor timm typing_extensions tzdata urllib3 yacs
+pip install matplotlib==3.5.3 platformdirs>=2.2.0 cython>=3.0.0 cython>=3.0.0 mako tqdm opencv-contrib-python munch trimesh plyfile evo==1.11.0 open3d torchmetrics imgviz PyOpenGL glfw PyGLM wandb lpips rich ruff appdirs attrs black blosc2 botocore certifi charset-normalizer click contourpy cycler docker-pycreds einops filelock flake8 flake8-bugbear flake8-comprehensions fonttools fsspec fvcore gitdb GitPython h5py huggingface-hub idna imageio imath iopath isort Jinja2 jmespath kiwisolver MarkupSafe mccabe mpmath msgpack mypy-extensions ndindex networkx ninja numexpr OpenEXR packaging pandas pathspec pillow>=9.3.0 platformdirs portalocker protobuf psutil py-cpuinfo pycodestyle pyflakes pyparsing python-dateutil pytz PyYAML requests safetensors scipy sentry-sdk setproctitle six smmap sympy tables tabulate termcolor timm typing_extensions tzdata urllib3 yacs
 
 # Install conda packages
 mamba install -n $ENV_NAME ros-humble-desktop compilers cmake pkg-config make ninja colcon-common-extensions catkin_tools rosdep -y
