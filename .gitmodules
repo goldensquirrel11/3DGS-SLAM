@@ -1,6 +1,6 @@
 [submodule "MonoGS"]
 	path = MonoGS
-	url = https://github.com/jagennath-hari/MonoGS
+	url = https://github.com/goldensquirrel11/MonoGS
 [submodule "UniDepth"]
 	path = UniDepth
-	url = https://github.com/jagennath-hari/UniDepth
+	url = https://github.com/goldensquirrel11/UniDepth
