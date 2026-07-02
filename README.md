@@ -1,14 +1,9 @@
 # RGBD-3DGS-SLAM
-RGBD-3DGS-SLAM is a sophisticated SLAM system that employs 3D Gaussian Splatting (3DGS) from Guassian Splatting SLAM (MonoGS) for precise point cloud and visual odometry estimations. It leverages neural network Universal Monocular Metric Depth Estimation (UniDepthV2) to infer depth and camera intrinsics from RGB images, and can also utilize additional camera information and depth maps if available. The system outputs high-quality point clouds and visual odometry data, making RGBD-3DGS-SLAM a versatile tool for a wide range of applications in robotics and computer vision.
+RGBD-3DGS-SLAM is a sophisticated SLAM system that employs 3D Gaussian Splatting (3DGS) from Gaussian Splatting SLAM (MonoGS) for precise point cloud and visual odometry estimations. It runs in monocular mode (tracking only, no depth) or RGB-D mode using real depth from a dataset, a depth camera, or a ROS 2 depth topic. It can also make use of a calibrated camera's intrinsics from a `CameraInfo` topic when running live. The system outputs high-quality point clouds and visual odometry data, making RGBD-3DGS-SLAM a versatile tool for a wide range of applications in robotics and computer vision.
 
 <div align="center">
-    <img src="assets/monGS_UniDepthV2.gif" alt="Real-Time MonoGS UniDepthV2 ROS 2" width="800"/>
-    <p>Real-Time MonoGS with UniDepthV2 for Depth and camera intrinsics with ROS 2</p>
-</div>
-
-<div align="center">
-    <img src="assets/TUM_ROS.png" alt="SLAM" width="800"/>
-    <p>MonoGS with UniDepthV2 and ROS 2</p>
+    <img src="assets/real_time_ROS.png" alt="Real-Time MonoGS ROS 2" width="800"/>
+    <p>Real-Time MonoGS with ROS 2</p>
 </div>
 
 ## 🏁 Dependencies
@@ -27,8 +22,7 @@ Or build from source using these libraries.
 
 1) PyTorch ([Official Link](https://pytorch.org/)).
 2) MonoGS ([Official Link](https://github.com/muskie82/MonoGS)).
-3) UniDepth ([Official Link](https://github.com/lpiccinelli-eth/UniDepth)).
-4) RoboStack ROS 2 Humble ([Offical Link](https://robostack.github.io/GettingStarted.html)).
+3) RoboStack ROS 2 Humble ([Offical Link](https://robostack.github.io/GettingStarted.html)).
 
 There is also enviroment.yml file, you can install or use as a reference using
 ```
@@ -52,46 +46,22 @@ You can run the system on the TUM dataset using the same method from the [origin
 python slam.py --config configs/mono/tum/fr3_office.yaml
 ```
 
-#### RGB-D mode without using the ground truth data
-The code has been refactored to not use the ground truth depth but the depth from UniDepthV2 instead. It can be executed similary provided by [original repository](https://github.com/muskie82/MonoGS). A new directory called `neural_depth` will get created and new Depth Maps from UniDepthV2 will be available in it. 
+#### RGB-D mode using the ground truth depth
+It can be executed the same way as the [original repository](https://github.com/muskie82/MonoGS), using the ground truth depth maps shipped with the TUM dataset.
 
 ```
 python slam.py --config configs/rgbd/tum/fr3_office.yaml
 ```
 
-##### Comparison
+<div align="center">
+    <img src="assets/ground_truth_depth.png" width="500" alt="Ground truth Depth Map from TUM dataset" />
+    <p>Ground truth Depth Map from TUM dataset</p>
+</div>
 
-<table>
-  <tr>
-    <td align="center">
-      <img src="assets/ground_truth_depth.png" width="400" height="350" alt="Ground truth Depth Map from TUM dataset" />
-      <br>
-      <i>Ground truth Depth Map from TUM dataset</i>
-    </td>
-    <td align="center">
-      <img src="assets/neural_depth.png" width="400" height="350" alt="Neural Depth Map produced by UniDepthV2" />
-      <br>
-      <i>Neural Depth Map produced by UniDepthV2</i>
-    </td>
-  </tr>
-</table>
-
-
-<table>
-  <tr>
-    <td align="center">
-      <img src="assets/original_MonoGS_result.png" width="400" height="350" alt="Original MonoGS Result" />
-      <br>
-      <i>Original MonoGS Result</i>
-    </td>
-    <td align="center">
-      <img src="assets/MonoGS_UniDepthV2_result.png" width="400" height="350" alt="MonoGS with UniDepthV2 Result" />
-      <br>
-      <i>MonoGS with UniDepthV2 Result</i>
-    </td>
-  </tr>
-</table>
-
+<div align="center">
+    <img src="assets/original_MonoGS_result.png" width="500" alt="MonoGS Result" />
+    <p>MonoGS Result</p>
+</div>
 
 <div align="center">
     <img src="assets/monoGS_rviz.png" alt="monoGS_rviz" width="800"/>
@@ -101,20 +71,10 @@ python slam.py --config configs/rgbd/tum/fr3_office.yaml
 ##### Cloud Viewer
 An online [Guassian Viewer](https://antimatter15.com/splat/) can be used to view the cloud in the `result` directory.
 
-<table>
-  <tr>
-    <td align="center">
-      <img src="assets/MonoGS_TUM_orginal_cloud.gif" width="400" height="350" alt="Original MonoGS Cloud" />
-      <br>
-      <i>Original MonoGS Cloud</i>
-    </td>
-    <td align="center">
-      <img src="assets/MonoGS_UniDepthV2_TUM_cloud.gif" width="400" height="350" alt="MonoGS with UniDepthV2 Cloud" />
-      <br>
-      <i>MonoGS with UniDepthV2 Cloud</i>
-    </td>
-  </tr>
-</table>
+<div align="center">
+    <img src="assets/MonoGS_TUM_orginal_cloud.gif" width="500" alt="MonoGS Cloud" />
+    <p>MonoGS Cloud</p>
+</div>
 
 
 ## 📈 Running Real-Time using ROS 2
@@ -157,7 +117,7 @@ ROS_topics:
   depth_topic: 'None'
   depth_scale: 1
 ```
-[UniDepthV2](https://github.com/lpiccinelli-eth/UniDepth) will estimate both camera intrinsics and metric Depth Map. So an RGB-D Image will be produced regardless.
+Whenever `camera_info_topic` is set to `'None'`, the camera intrinsics must instead be provided directly in the config under `Dataset.Calibration` (`fx`, `fy`, `cx`, `cy`, distortion coefficients, `width`, `height`); the system has no way to infer them otherwise.
 
 To execute the SLAM system
 Move to MonoGS directory if not already ```cd MonoGS```.
@@ -171,12 +131,12 @@ python slam.py --config configs/live/ROS.yaml
 ### ⚠️ Note
 Depth Maps can be of different scales, make sure to set the depth scale in the ROS topics infos.
 
-UniDepthV2 is not perfect and the estimated intrinsics and Depth Maps may not be accurate, it is advised to use a calibrated camera and use Depth Maps if available.
+It is advised to use a calibrated camera (a `camera_info_topic`) and provide Depth Maps if available, since there is no fallback estimation for either.
 
 ### Real-Time ROS 2 output Viewer and in RVIZ 2
 <div align="center">
     <img src="assets/real_time_ROS.png" alt="SLAM" width="800"/>
-    <p>MonoGS with UniDepthV2 and ROS 2</p>
+    <p>MonoGS with ROS 2</p>
 </div>
 
 #### ROS 2 message outputs
@@ -194,22 +154,13 @@ If you found this code/work to be useful in your own research, please considerin
   year={2024}
 }
 ```
-```bibtex
-@inproceedings{piccinelli2024unidepth,
-    title={UniDepth: Universal Monocular Metric Depth Estimation},
-    author = {Piccinelli, Luigi and Yang, Yung-Hsu and Sakaridis, Christos and Segu, Mattia and Li, Siyuan and Van Gool, Luc and Yu, Fisher},
-    booktitle = {IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
-    year={2024}
-}
-```
 
 ## 🪪 License
-This software is released under BSD-3-Clause license. You can view a license summary [here](LICENSE). [MonoGS](https://github.com/muskie82/MonoGS) and [UniDepth](https://github.com/lpiccinelli-eth/UniDepth) have their own licenses respectively.
+This software is released under BSD-3-Clause license. You can view a license summary [here](LICENSE). [MonoGS](https://github.com/muskie82/MonoGS) has its own license.
 
 ## 🙏 Acknowledgement
 This work incorporates many open-source codes.
 - [Gaussian Splatting SLAM](https://github.com/muskie82/MonoGS)
-- [UniDepth: Universal Monocular Metric Depth Estimation](https://github.com/lpiccinelli-eth/UniDepth)
 - [3D Gaussian Splatting](https://github.com/graphdeco-inria/gaussian-splatting)
 - [Differential Gaussian Rasterization
 ](https://github.com/graphdeco-inria/diff-gaussian-rasterization)
